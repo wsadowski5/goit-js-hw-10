@@ -1,8 +1,12 @@
 
 const select = document.querySelector('.breed-select');
 const catDiv = document.querySelector('.cat-info')
+
+const url = 'https://api.thecatapi.com/v1'
+
+
 export function fetchBreeds () {
-    return fetch("https://api.thecatapi.com/v1/breeds")
+    return fetch(`${url}/breeds`)
     .then((response) => {
         if (!response.ok) {
             throw new Error(response.status);
@@ -10,26 +14,25 @@ export function fetchBreeds () {
         return response.json();
         }
     )
-    .then(data => {
-        const markup = data
-        .map((data) => {
-         return `<option value="${data.id}">${data.name}</option>`
-            })
-        .join("")
-        select.innerHTML = markup
+        .catch ((error)=> 
+        console.log(error)
+        )
 
-            const options = document.querySelectorAll('option')
-            for ( i=0; i <= options.length ; i++)
-            console.log(options[i].value)
+    
+} 
 
-        }
+
+export function fetchCatByBreed(breedId){
+   return fetch(`${url}/images/search?breed_ids=${breedId}`)
+   .then((response) => {
+    if (!response.ok) {
+        throw new Error(response.status);
+    }
+    return response.json();
+    }
+)
+    .catch ((error)=> 
+    console.log(error)
     )
 }
-console.log(catDiv)
-
-// export function fetchCatByBreed(breedId){
-//    console.log(fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=%{breedId}`)) 
-// }
-
-
 
