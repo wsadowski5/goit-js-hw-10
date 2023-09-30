@@ -6,7 +6,7 @@ import { fetchBreeds , fetchCatByBreed } from "./cat-api";
 axios.defaults.headers.common["x-api-key"]= "live_OIkYX82bWzIC8zdh96brfaBAnz6jUpklRMxKHzDmtBCZ2BEHv9CQ4uOHPRDATPH6";
 
 const select = document.querySelector('.breed-select');
-
+const catDiv = document.querySelector('.cat-info')
 
 const responseBreeds = fetchBreeds()
 
@@ -26,12 +26,22 @@ function createOptions() {
 
 createOptions()
 
-const option = document.querySelector('option')
-console.log(value)
 
-console.log(option.value)
 
-const responseBreed = fetchCatByBreed('abys')
+function displayBreed (event) {
+    const breedId = event.currentTarget.value
+    const cat = fetchCatByBreed(breedId)
+        .then(data => {
+            const markup = data
+            .map((data) => {
+                return `<img src="${data.url}" width ="${data.width}">`
+            })
+            .join("")
+            catDiv.innerHTML = markup
+        } 
+    )
+}
 
-console.log(responseBreed)
+select.addEventListener('change', displayBreed)
+
 

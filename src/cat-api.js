@@ -1,8 +1,9 @@
 
-const select = document.querySelector('.breed-select');
-const catDiv = document.querySelector('.cat-info')
+
+
 
 const url = 'https://api.thecatapi.com/v1'
+
 
 
 export function fetchBreeds () {
