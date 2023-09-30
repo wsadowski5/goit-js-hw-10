@@ -28,7 +28,7 @@ createOptions()
 
 
 
-function displayBreed (event) {
+function displayImg (event) {
     const breedId = event.currentTarget.value
     const cat = fetchCatByBreed(breedId)
         .then(data => {
@@ -37,11 +37,44 @@ function displayBreed (event) {
                 return `<img src="${data.url}" width ="${data.width}">`
             })
             .join("")
-            catDiv.innerHTML = markup
+            catDiv.insertAdjacentHTML("afterbegin", markup) 
         } 
     )
 }
 
-select.addEventListener('change', displayBreed)
+function displayInfo () {
+    responseBreeds
+    .then (data => {
+
+        for (let i = 0; i <= data.length; i++) {
+            console.log(data[i].id)
+            console.log(select.value)
+
+            if (data[i].id === select.value){
+                    
+                console.log('is ok')
+
+                const markup = 
+                    `<p>${data[i].name}</p>
+                    <p>${data[i].description}</p>
+                    <p>${data[i].temperament}</p>`
+
+                catDiv.innerHTML = markup
+                return
+            }
+
+            else {
+                console.log('error')
+            }
+            
+        }
+    }
+    )
+}
+
+
+
+select.addEventListener('change', displayImg)
+select.addEventListener('change', displayInfo)
 
 
