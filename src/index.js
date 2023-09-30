@@ -1,12 +1,10 @@
-import axios from "axios"
 
 import { fetchBreeds , fetchCatByBreed } from "./cat-api";
 
-
-axios.defaults.headers.common["x-api-key"]= "live_OIkYX82bWzIC8zdh96brfaBAnz6jUpklRMxKHzDmtBCZ2BEHv9CQ4uOHPRDATPH6";
-
 const select = document.querySelector('.breed-select');
-const catDiv = document.querySelector('.cat-info')
+const catDiv = document.querySelector('.cat-info');
+const loader = document.querySelector('.loader')
+const error = document.querySelector('.error')
 
 const responseBreeds = fetchBreeds()
 
@@ -19,62 +17,33 @@ function createOptions() {
             })
         .join("")
         select.innerHTML = markup
-        
         }
     )
 }   
 
 createOptions()
 
-
-
-function displayImg (event) {
+function displayCat (event) {
     const breedId = event.currentTarget.value
-    const cat = fetchCatByBreed(breedId)
+    fetchCatByBreed(breedId)
+
         .then(data => {
+            
             const markup = data
             .map((data) => {
-                return `<img src="${data.url}" width ="${data.width}">`
+                return `<img src="${data.url}" width ="${data.width}">gicc
+                <p>${data.breeds[0].name}</p>
+                <p>${data.breeds[0].description}</p>
+                <p>${data.breeds[0].temperament}</p>`
+                
             })
             .join("")
-            catDiv.insertAdjacentHTML("afterbegin", markup) 
+            catDiv.innerHTML = markup 
         } 
     )
 }
 
-function displayInfo () {
-    responseBreeds
-    .then (data => {
+select.addEventListener('change', displayCat)
 
-        for (let i = 0; i <= data.length; i++) {
-            console.log(data[i].id)
-            console.log(select.value)
-
-            if (data[i].id === select.value){
-                    
-                console.log('is ok')
-
-                const markup = 
-                    `<p>${data[i].name}</p>
-                    <p>${data[i].description}</p>
-                    <p>${data[i].temperament}</p>`
-
-                catDiv.innerHTML = markup
-                return
-            }
-
-            else {
-                console.log('error')
-            }
-            
-        }
-    }
-    )
-}
-
-
-
-select.addEventListener('change', displayImg)
-select.addEventListener('change', displayInfo)
 
 
