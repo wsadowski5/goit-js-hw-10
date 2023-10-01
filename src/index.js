@@ -3,10 +3,13 @@ import { fetchBreeds , fetchCatByBreed } from "./cat-api";
 
 const select = document.querySelector('.breed-select');
 const catDiv = document.querySelector('.cat-info');
-const loader = document.querySelector('.loader')
-const error = document.querySelector('.error')
+
 
 const responseBreeds = fetchBreeds()
+
+
+
+
 
 function createOptions() {
     responseBreeds
@@ -31,7 +34,7 @@ function displayCat (event) {
             
             const markup = data
             .map((data) => {
-                return `<img src="${data.url}" width ="${data.width}">gicc
+                return `<img src="${data.url}" width ="${data.width}">
                 <p>${data.breeds[0].name}</p>
                 <p>${data.breeds[0].description}</p>
                 <p>${data.breeds[0].temperament}</p>`
