@@ -2,6 +2,9 @@
 // import axios from "axios"
 // axios.defaults.headers.common["x-api-key"]= "live_OIkYX82bWzIC8zdh96brfaBAnz6jUpklRMxKHzDmtBCZ2BEHv9CQ4uOHPRDATPH6";
 
+
+
+
 const select = document.querySelector('.breed-select');
 const catDiv = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
@@ -50,6 +53,7 @@ export function fetchCatByBreed(breedId){
         failed.classList.remove('hidden')
         loader.classList.add('hidden')
         console.log(error)
+        Notiflix.Report.failure('Failure!','Oops! Something went wrong! Try reloading the page!', 'Close');
         }
     )
 }
