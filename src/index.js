@@ -1,20 +1,19 @@
 
 import { fetchBreeds , fetchCatByBreed } from "./cat-api";
-
 import Notiflix from 'notiflix';
+import SlimSelect from 'slim-select';
+import 'slim-select/dist/slimselect.css';
 
-
-const select = document.querySelector('.breed-select');
+const selectBreed = document.querySelector('.breed-select');
 const catDiv = document.querySelector('.cat-info');
+const loader = document.querySelector('.loader');
 
-
-import SlimSelect from 'slim-select'
 
 
 function createOptions() {
+    selectBreed.classList.add('hidden')
     fetchBreeds()
     .then(data => {
-
         select = new SlimSelect({
             select: '.breed-select',
             data: data.map(data => ({
@@ -22,29 +21,33 @@ function createOptions() {
               value: data.id,
             })),
           })
-
-
-
-        // const markup = data
-        // .map((data) => {
-        // return `<option value="${data.id}">${data.name}</option>`})
-        // .join("")
-        // select.innerHTML = markup
+          
         }
     )
-}   
+
+    .catch ((error)=> {
+        console.log(error)
+        loader.classList.add('hidden')
+        Notiflix.Report.failure('Failure!','Oops! Something went wrong! Try reloading the page!', 'Close');
+    }
+    )
+}  
 
 createOptions()
 
+
 function displayCat (event) {
     const breedId = event.currentTarget.value
+    loader.classList.remove('hidden')
+    catDiv.classList.add('hidden')
+    
     fetchCatByBreed(breedId)
 
         .then(data => {
             
             const markup = data
             .map((data) => {
-                return `<img src="${data.url}" width ="${data.width}">
+                return `<img src="${data.url}" alt ="Cat ${data.breeds[0].name}">
                 <div class="breed-description">
                 <h2>${data.breeds[0].name}</h2>
                 <p><h4>Description:</h4>${data.breeds[0].description}</p>
@@ -56,9 +59,21 @@ function displayCat (event) {
             catDiv.innerHTML = markup 
         } 
     )
+    .then (data => {
+        loader.classList.add('hidden')
+        catDiv.classList.remove('hidden')
+        selectBreed.classList.remove('hidden')
+    })
+    .catch ((error)=> {
+            loader.classList.add('hidden')
+            Notiflix.Report.failure('Failure!','Oops! Something went wrong! Try reloading the page!', 'Close');
+        }
+    )
+    
+    
 }
 
-select.addEventListener('change', displayCat)
+selectBreed.addEventListener('change', displayCat)
 
 
 
