@@ -8,13 +8,11 @@ const selectBreed = document.querySelector('.breed-select');
 const catDiv = document.querySelector('.cat-info');
 const loader = document.querySelector('.loader');
 
-
-
 function createOptions() {
     selectBreed.classList.add('hidden')
     fetchBreeds()
     .then(data => {
-        select = new SlimSelect({
+    new SlimSelect({
             select: '.breed-select',
             data: data.map(data => ({
               text: data.name,
@@ -24,7 +22,6 @@ function createOptions() {
           
         }
     )
-
     .catch ((error)=> {
         console.log(error)
         loader.classList.add('hidden')
@@ -39,12 +36,9 @@ createOptions()
 function displayCat (event) {
     const breedId = event.currentTarget.value
     loader.classList.remove('hidden')
-    catDiv.classList.add('hidden')
-    
+    catDiv.classList.add('hidden')    
     fetchCatByBreed(breedId)
-
         .then(data => {
-            
             const markup = data
             .map((data) => {
                 return `<img src="${data.url}" alt ="Cat ${data.breeds[0].name}">
@@ -69,8 +63,6 @@ function displayCat (event) {
             Notiflix.Report.failure('Failure!','Oops! Something went wrong! Try reloading the page!', 'Close');
         }
     )
-    
-    
 }
 
 selectBreed.addEventListener('change', displayCat)
